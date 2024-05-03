@@ -1,4 +1,4 @@
-use nalgebra::{Complex, matrix, Matrix2};
+use nalgebra::{matrix, Complex, Matrix2};
 
 /// Identity and Pauli Matrices
 pub const HBAR: f64 = 1.0545718e-34;
@@ -32,7 +32,12 @@ impl Hamiltonian {
 
         let scale = Complex::from(0.5 * HBAR);
 
-        let h: Matrix2<Complex<f64>> = scale_matrix(&(scale_matrix(&PAULI_X, omega_x) + scale_matrix(&PAULI_Y, omega_y) + scale_matrix(&PAULI_Z, omega_z)), scale);
+        let h: Matrix2<Complex<f64>> = scale_matrix(
+            &(scale_matrix(&PAULI_X, omega_x)
+                + scale_matrix(&PAULI_Y, omega_y)
+                + scale_matrix(&PAULI_Z, omega_z)),
+            scale,
+        );
         Hamiltonian { operator: h }
     }
 }
@@ -62,12 +67,12 @@ impl BlochVector {
         let y = self.phi.sin() * self.theta.sin() * self.r;
         let z = self.phi.cos() * self.r;
 
-        (x,y,z)
+        (x, y, z)
     }
 }
 
 /// Qubit represented on a bloch sphere.
- pub struct Qubit {
+pub struct Qubit {
     pub initial_state: BlochVector,
     pub density_matrix: Matrix2<Complex<f64>>,
 }
@@ -78,7 +83,12 @@ impl Qubit {
         // Convert to complex numbers
         let (x, y, z) = (Complex::from(a_x), Complex::from(a_y), Complex::from(a_z));
 
-        let density: Matrix2<Complex<f64>> = scale_matrix(&(I + scale_matrix(&PAULI_X, x) + scale_matrix(&PAULI_Y, y) + scale_matrix(&PAULI_Z, z)), Complex::from(0.5));
+        let density: Matrix2<Complex<f64>> = scale_matrix(
+            &(I + scale_matrix(&PAULI_X, x)
+                + scale_matrix(&PAULI_Y, y)
+                + scale_matrix(&PAULI_Z, z)),
+            Complex::from(0.5),
+        );
         Qubit {
             initial_state: a,
             density_matrix: density,
@@ -101,4 +111,4 @@ impl Qubit {
             Ok(measurement.re)
         }
     }
-} 
+}
