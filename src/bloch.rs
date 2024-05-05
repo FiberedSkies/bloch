@@ -102,7 +102,8 @@ impl Qubit {
         self.density_matrix = u * self.density_matrix * u_dagger;
     }
 
-    pub fn measure(&self, a: &Matrix2<Complex<f64>>) -> Result<f64, String> {
+    pub fn measure(&mut self, a: &Matrix2<Complex<f64>>, h: &Hamiltonian, t: f64) -> Result<f64, String> {
+        self.evolve(h, t);
         let measured = self.density_matrix * a;
         let measurement = measured.trace();
         if measurement.im != 0.0 {
