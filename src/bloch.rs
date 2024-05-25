@@ -55,11 +55,7 @@ impl BlochVector {
             panic!("Not a valid state! Magnitude must be less than or equal to one")
         }
 
-        BlochVector {
-            theta: theta,
-            phi: phi,
-            r: r,
-        }
+        BlochVector { theta, phi, r }
     }
 
     pub fn coordinates(&self) -> (f64, f64, f64) {
@@ -102,7 +98,13 @@ impl Qubit {
         self.density_matrix = u * self.density_matrix * u_dagger;
     }
 
-    pub fn measure(&self, a: &Matrix2<Complex<f64>>) -> Result<f64, String> {
+    pub fn measure(
+        &mut self,
+        a: &Matrix2<Complex<f64>>,
+        h: &Hamiltonian,
+        t: f64,
+    ) -> Result<f64, String> {
+        self.evolve(h, t);
         let measured = self.density_matrix * a;
         let measurement = measured.trace();
         if measurement.im != 0.0 {
