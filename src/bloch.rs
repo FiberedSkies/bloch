@@ -55,11 +55,7 @@ impl BlochVector {
             panic!("Not a valid state! Magnitude must be less than or equal to one")
         }
 
-        BlochVector {
-            theta: theta,
-            phi: phi,
-            r: r,
-        }
+        BlochVector { theta, phi, r }
     }
 
     pub fn coordinates(&self) -> (f64, f64, f64) {

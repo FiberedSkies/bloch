@@ -43,9 +43,9 @@ impl<T: Clone + 'static + Eq + Debug> OpX<T> {
         self.opensets.push(cumulative_vec);
     }
 
-    pub fn inlcusion(&self, from: &Vec<T>, to: &Vec<T>) -> Option<<OpX<T> as Category>::Morphism> {
+    pub fn inlcusion(&self, from: &[T], to: &[T]) -> Option<<OpX<T> as Category>::Morphism> {
         if from.iter().all(|item| to.contains(item)) {
-            let to_clone = to.clone();
+            let to_clone = to.to_owned();
             Some(Box::new(move |_x| to_clone.clone()))
         } else {
             None
